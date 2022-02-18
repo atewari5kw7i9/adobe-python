@@ -83,11 +83,12 @@ def group_result(adobe_df):
 def write_out_file(adobe_df, s3_out_path):
     print("Step8")
     try:
-        adobe_df.write.format("csv").\
-            save(s3_out_path).\
+        adobe_df.coalesce(1).\
+            write.format("csv").\
             option("header", True). \
             option("delimiter", "\t").\
-            mode("overwrite")
+            mode("overwrite"). \
+            save(s3_out_path)
     except Exception as e:
         print(e)
         raise
