@@ -79,10 +79,14 @@ def group_result(adobe_df):
     summary_df = df3.groupBy("domain_name", "search1").sum("Total_Revenue")
     return summary_df
 
-def write_out_file(adobe_df, out_path):
+
+def write_out_file(adobe_df, s3_out_path):
     print("Step8")
-    s3_out_path = join("s3://", out_path)
-    adobe_df.write.format("csv").\
-        save(s3_out_path).\
-        option("header", True). \
-        option("delimiter", "\t")
+    try:
+        adobe_df.write.format("csv").\
+            save(s3_out_path).\
+            option("header", True). \
+            option("delimiter", "\t")
+    except Exception as e:
+        print(e)
+        raise
