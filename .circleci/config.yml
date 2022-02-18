@@ -11,8 +11,8 @@ jobs:
     steps:
       - checkout
       - run:
-        command: |
-          python -m venv venv
+          command: |
+            python -m venv venv
     working_directory: ./venv
 #    artifacts:
 #      paths:
