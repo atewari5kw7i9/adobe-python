@@ -82,6 +82,6 @@ def group_result(adobe_df):
 def write_out_file(adobe_df, out_path):
     print("Step8")
     s3_out_path = join("s3://", out_path)
-    adobe_df.write.coalesce(1).\
+    adobe_df.coalesce(1).write.\
         option("header", True, delimiter='\t').\
         mode('Overwrite').csv(s3_out_path)
