@@ -1,7 +1,6 @@
 import sys
-from pyspark.sql import *
-from utils.logger_utils import Log4j
-from utils.spark_utils import *
+from src.jobs.utils.logger_utils import Log4j
+from src.jobs.utils.spark_utils import *
 from pyspark.sql.functions import split, col
 
 
@@ -16,9 +15,9 @@ if __name__ == "__main__":
 
     logger = Log4j(spark)
 
-    if len(sys.argv) != 2:
-        logger.error("Usage: HelloSpark <filename>")
-        sys.exit(-1)
+    # if len(sys.argv) != 2:
+    #     logger.error("Usage: HelloSpark <filename>")
+    #     sys.exit(-1)
 
     logger.info("Starting HelloSpark")
 

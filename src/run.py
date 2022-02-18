@@ -1,9 +1,8 @@
 from jobs import \
     transform,\
     validate
-from utils.logger_utils import Log4j
-from utils.spark_utils import create_spark_session
-
+from src.jobs.utils.logger_utils import Log4j
+from src.jobs.utils.spark_utils import create_spark_session
 
 jobs = {
     'job_transform': transform.process,
