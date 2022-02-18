@@ -86,7 +86,8 @@ def write_out_file(adobe_df, s3_out_path):
         adobe_df.write.format("csv").\
             save(s3_out_path).\
             option("header", True). \
-            option("delimiter", "\t")
+            option("delimiter", "\t").\
+            mode("overwrite")
     except Exception as e:
         print(e)
         raise
