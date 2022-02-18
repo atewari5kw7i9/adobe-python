@@ -3,7 +3,6 @@ version: 2.1
 # Define the jobs we want to run for this project
 jobs:
   build:
-    stage: build
     docker:
       - image: python:3.7-stretch
     entrypoint:
@@ -16,11 +15,8 @@ jobs:
         - ./venv
 
   test:
-    stage: test
     docker:
       - image: python:3.7-stretch
-    requires:
-      - build
     steps:
       run:
         command:
@@ -31,11 +27,8 @@ jobs:
           python -m unittest discover .
 
   apply:
-    stage: deploy
     docker:
       - image: python:3.7-stretch
-    requires:
-      - test
     steps:
       run:
         command:
@@ -60,4 +53,8 @@ workflows:
     jobs:
       - build
       - test
+          requires:
+            - build
       - apply
+          requires:
+            - test
