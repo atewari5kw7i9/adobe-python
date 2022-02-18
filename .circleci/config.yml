@@ -21,13 +21,13 @@ jobs:
       - image: python:3.7-stretch
     dependencies:
       - build
-    before_script:
-      - apt-get update
-      - apt-get install default-jdk -y
-    script:
-      - . ./venv/bin/activate
-      - pip install -e .
-      - python -m unittest discover .
+    run:
+      command:
+        apt-get update
+        apt-get install default-jdk -y
+        . ./venv/bin/activate
+        pip install -e .
+        python -m unittest discover .
 
   apply:
     stage: deploy
@@ -35,13 +35,14 @@ jobs:
       - image: python:3.7-stretch
     dependencies:
       - test
-    before_script:
-      - apt-get update
-      - apt -y install zip unzip
-      - pip install awscli
-      - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
-      - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
-      - aws configure set region $AWS_DEFAULT_REGION
+    run:
+      command:
+        apt-get update
+        apt -y install zip unzip
+        pip install awscli
+        aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+        aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+        aws configure set region $AWS_DEFAULT_REGION
     script:
       - zip -r src.zip ./src
       - aws s3 cp readme.md s3://$INPUT_BUCKET/v$(python setup.py --version)/readme.md
