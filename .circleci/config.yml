@@ -46,11 +46,9 @@ jobs:
             aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
             aws configure set region $AWS_DEFAULT_REGION
             zip -r src.zip ./src
-            aws s3 cp readme.md s3://$INPUT_BUCKET/v$(python setup.py --version)/readme.md
             aws s3 cp src.zip s3://$INPUT_BUCKET/v$(python setup.py --version)/src.zip
             aws s3 cp main.py s3://$INPUT_BUCKET/v$(python setup.py --version)/main.py
 
-            aws s3 cp readme.md s3://$INPUT_BUCKET/latest/readme.md
             aws s3 cp src.zip s3://$INPUT_BUCKET/latest/src.zip
             aws s3 cp main.py s3://$INPUT_BUCKET/latest/main.py
 
