@@ -1,31 +1,19 @@
-import logging
-from logging.config import dictConfig
+class Log4j(object):
+    def __init__(self, spark):
+        root_class = "adobe.data.playground"
+        conf = spark.sparkContext.getConf()
+        app_name = conf.get("spark.app.name")
+        log4j = spark._jvm.org.apache.log4j
+        self.logger = log4j.LogManager.getLogger(root_class + "." + app_name)
 
+    def warn(self, message):
+        self.logger.warn(message)
 
-def get_logger():
-    logging_config = {
-        'version': 1,
-        'formatters': {
-            'f': {
-                'format': '%(asctime)s %(name)-12s %(levelname)-8s %(message)s'
-            }
-        },
-        'handlers': {
-            'h': {
-                'class': 'logging.StreamHandler',
-                'formatter': 'f',
-                'level': 20
-            }
-        },
-        'root': {
-            'handlers': [
-                'h'
-            ],
-            'level': 10
-        }
-    }
+    def info(self, message):
+        self.logger.info(message)
 
-    dictConfig(logging_config)
+    def error(self, message):
+        self.logger.error(message)
 
-    logger = logging.getLogger()
-    return logger
+    def debug(self, message):
+        self.logger.debug(message)

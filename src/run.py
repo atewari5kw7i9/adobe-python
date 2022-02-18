@@ -1,8 +1,8 @@
-from src.jobs import \
+from jobs import \
     transform,\
     validate
-from src.utils.logger_utils import get_logger
-from src.utils.spark_utils import create_spark_session
+from utils.logger_utils import Log4j
+from utils.spark_utils import create_spark_session
 
 
 jobs = {
@@ -12,17 +12,16 @@ jobs = {
 
 
 def run(parameters):
-    logger = get_logger()
+    spark_config = parameters['spark_config']
+    spark = create_spark_session(spark_config=spark_config)
+    job_name = parameters['job_name']
+    process_function = jobs[job_name]
+
+    logger = Log4j(spark)
 
     for parameter, value in parameters.items():
         logger.info('Param {param}: {value}'.format(param=parameter, value=value))
 
-    spark_config = parameters['spark_config']
-    spark = create_spark_session(spark_config=spark_config)
-
-    job_name = parameters['job_name']
-
-    process_function = jobs[job_name]
     process_function(
         spark=spark,
         input_path=parameters['input_path'],
