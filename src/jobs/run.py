@@ -9,6 +9,7 @@ jobs = {
 
 
 def run(parameters):
+    print("***Running***")
     spark_config = parameters['spark_config']
     spark_builder = SparkSession.builder.appName("adobe-logs")
     for k,v in spark_config.items():
