@@ -5,14 +5,15 @@ jobs:
   build:
     docker:
       - image: python:3.7-stretch
-    entrypoint:
-        - '/usr/bin/env'
-        - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+#    entrypoint:
+#        - '/usr/bin/env'
+#        - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
     steps:
       - checkout
       - run:
         command: |
           python -m venv venv
+    working_directory: ./venv
 #    artifacts:
 #      paths:
 #        - ./venv
