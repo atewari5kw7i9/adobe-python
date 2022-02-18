@@ -4,7 +4,7 @@ from os.path import join as join_path
 def process(spark, input_path, output_path, save_mode='append'):
 
     # read data
-    df = spark.read.parquet(input_path)
+    df = spark.read.csv(input_path)
 
     # processing
     pass
