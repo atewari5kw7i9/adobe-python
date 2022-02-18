@@ -11,5 +11,5 @@ if __name__ == '__main__':
     #  "input_path": "src/jobs/data/adobe-data.tsv",
     #  "output_path": "src/jobs/data/logs-adobe-outboud"
     #  }
-    parameters = str_parameters
+    #parameters = str_parameters
     run(parameters)
