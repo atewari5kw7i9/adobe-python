@@ -26,6 +26,7 @@ jobs:
           command: |
             apt-get update
             apt-get install default-jdk -y
+            python -m venv venv
             . ./venv/bin/activate
             pip install -e .
             python -m unittest discover .
