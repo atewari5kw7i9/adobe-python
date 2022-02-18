@@ -1,5 +1,5 @@
 from pyspark.sql.types import StructType, StructField, DateType, StringType
-from pyspark.sql.functions import explode, col, split
+from pyspark.sql.functions import explode, col, split, sum
 from os.path import join
 
 
@@ -63,8 +63,15 @@ def scrap_search_url(adobe_df):
     df1 = df1.drop("referrer").drop("page_url")
     return df1
 
-def write_out_file(adobe_df, out_path, save_mode):
+def group_result(adobe_df):
+    df3 = adobe_df.selectExpr("cast(domain_name as string) domain_name",
+                         "cast(search1 as string) search1",
+                         "cast(Total_Revenue as double) Total_Revenue")
+    summary_df = df3.groupBy("domain_name", "search1").sum("Total_Revenue")
+    return summary_df
+
+def write_out_file(adobe_df, out_path):
     #s3_out_path = join("s3://",out_path)
     s3_out_path = out_path
     #adobe_df.show()
-    adobe_df.write.mode('Overwrite').csv(s3_out_path+'/file_name.csv')
+    adobe_df.write.option("header", True, delimiter='\t').mode('Overwrite').csv(s3_out_path)

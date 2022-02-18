@@ -23,7 +23,8 @@ def process(spark, input_path, output_path, save_mode='append'):
     adobe_df = filter_adobe_df(adobe_explode_df)
     adobe_df = split_adobe_df(adobe_df)
     adobe_df = scrap_search_url(adobe_df)
-    write_out_file(adobe_df, output_path, save_mode)
+    adobe_df = group_result(adobe_df)
+    write_out_file(adobe_df, output_path)
 
     logger.info("Finished HelloSpark")
     spark.stop()
