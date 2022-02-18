@@ -8,8 +8,11 @@ jobs:
     entrypoint:
         - '/usr/bin/env'
         - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
-    script:
-      - python -m venv venv
+    steps:
+      -checkout
+      -run:
+        command: |
+          python -m venv venv
 #    artifacts:
 #      paths:
 #        - ./venv
