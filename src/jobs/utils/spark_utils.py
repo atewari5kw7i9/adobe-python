@@ -4,7 +4,6 @@ from os.path import join
 
 
 def load_adobe_df(spark, data_file):
-
     adobeSchemaStruct = StructType([
         StructField("hit_time_gmt", DateType()),
         StructField("date_time", DateType()),
@@ -28,16 +27,17 @@ def load_adobe_df(spark, data_file):
         .csv(data_file)
 
 
-
 def select_adobe_df(adobe_raw_df):
     # return adobe_raw_df.filter("event_list = 1") \
     #     .select("event_list", "product_list", "page_url", "referrer")
     return adobe_raw_df.select("event_list", "product_list", "page_url", "referrer")
 
+
 def filter_adobe_df(adobe_df):
      print(adobe_df)
      return adobe_df.filter("events_types = 1") \
          .select("events_types", "product_attributes", "page_url", "referrer")
+
 
 def explode_adobe_df(adobe_df):
     # return adobe_raw_df.filter("event_list = 1") \
@@ -47,10 +47,12 @@ def explode_adobe_df(adobe_df):
     adobe_df_tmp = adobe_df_tmp.withColumn("events_types", col("events_types").cast("int"))
     return adobe_df_tmp
 
+
 def split_adobe_df(adobe_exploded_df):
     split_cols = split(adobe_exploded_df['product_attributes'], ';')
     df1 = adobe_exploded_df.withColumn('Total_Revenue', split_cols.getItem(3))
     return df1
+
 
 def scrap_search_url(adobe_df):
     search_str_begin = "(p=|q=|k=)"
@@ -71,7 +73,7 @@ def group_result(adobe_df):
     return summary_df
 
 def write_out_file(adobe_df, out_path):
-    #s3_out_path = join("s3://",out_path)
-    s3_out_path = out_path
-    #adobe_df.show()
-    adobe_df.write.option("header", True, delimiter='\t').mode('Overwrite').csv(s3_out_path)
+    s3_out_path = join("s3://", out_path)
+    adobe_df.write.coalesce(1).\
+        option("header", True, delimiter='\t').\
+        mode('Overwrite').csv(s3_out_path)

@@ -17,10 +17,10 @@ def run(parameters):
     job_name = parameters['job_name']
     process_function = jobs[job_name]
 
-    logger = Log4j(spark)
+    #logger = Log4j(spark)
 
-    for parameter, value in parameters.items():
-        logger.info('Param {param}: {value}'.format(param=parameter, value=value))
+    # for parameter, value in parameters.items():
+    #     logger.info('Param {param}: {value}'.format(param=parameter, value=value))
 
     process_function(
         spark=spark,
