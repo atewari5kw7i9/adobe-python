@@ -1,8 +1,6 @@
-import configparser
-from pyspark import SparkConf
 from pyspark.sql.types import StructType, StructField, DateType, StringType
 from pyspark.sql.functions import explode, col, split
-from pyspark.sql import SparkSession
+from os.path import join
 
 
 def load_adobe_df(spark, data_file):
@@ -65,20 +63,8 @@ def scrap_search_url(adobe_df):
     df1 = df1.drop("referrer").drop("page_url")
     return df1
 
-def get_spark_app_config():
-    spark_conf = SparkConf()
-    config = configparser.ConfigParser()
-    config.read("spark.conf")
-
-    for (key, val) in config.items("SPARK_APP_CONFIGS"):
-        spark_conf.set(key, val)
-    return spark_conf
-
-def create_spark_session(spark_config, app_name='pyspark-adobe'):
-    spark_builder = SparkSession.builder.appName(app_name)
-
-    for k, v in spark_config.items():
-        spark_builder.config(k, v)
-
-    spark_session = spark_builder.getOrCreate()
-    return spark_session
+def write_out_file(adobe_df, out_path, save_mode):
+    #s3_out_path = join("s3://",out_path)
+    s3_out_path = out_path
+    #adobe_df.show()
+    adobe_df.write.mode('Overwrite').csv(s3_out_path+'/file_name.csv')
