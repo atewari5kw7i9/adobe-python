@@ -17,6 +17,8 @@ jobs:
 
   test:
     stage: test
+    docker:
+      - image: python:3.7-stretch
     dependencies:
       - build
     before_script:
@@ -29,6 +31,8 @@ jobs:
 
   apply:
     stage: deploy
+    docker:
+      - image: python:3.7-stretch
     dependencies:
       - test
     before_script:
