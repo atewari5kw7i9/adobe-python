@@ -19,15 +19,15 @@ class UtilsTestCase(TestCase):
         result_count = adobe_df.count()
         self.assertEqual(result_count, 21, "Record count should be 21")
 
-    # def test_country_count(self):
-    #     sample_df = load_survey_df(self.spark, "data/sample.csv")
-    #     count_list = count_by_country(sample_df).collect()
-    #     count_dict = dict()
-    #     for row in count_list:
-    #         count_dict[row["Country"]] = row["count"]
-    #     self.assertEqual(count_dict["United States"], 4, "Count for United States should be 4")
-    #     self.assertEqual(count_dict["Canada"], 2, "Count for Canada should be 2")
-    #     self.assertEqual(count_dict["United Kingdom"], 1, "Count for Unites Kingdom should be 1")
+    def test_cast_filer(self):
+        adobe_data_obj = adobe_data(self.spark, "src/jobs/data/adobe-data.tsv")
+        adobe_df = adobe_data_obj.select_adobe_fields(adobe_data_obj.adobe_raw_df)
+        adobe_df = adobe_data_obj.cast_adobe_df(adobe_df)
+        adobe_df = adobe_data_obj.explode_adobe_df(adobe_df)
+        adobe_df = adobe_data_obj.filter_adobe_df(adobe_df)
+        result_count = adobe_df.count()
+        self.assertEqual(result_count, 5, "Record count should be 5")
+
 
     @classmethod
     def tearDownClass(cls) -> None:
