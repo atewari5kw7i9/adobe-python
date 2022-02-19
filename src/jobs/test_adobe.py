@@ -14,7 +14,7 @@ class UtilsTestCase(TestCase):
             .getOrCreate()
 
     def test_datafile_loading(self):
-        adobe_data_obj = adobe_data(self.spark, "data/adobe-data.tsv")
+        adobe_data_obj = adobe_data(self.spark, "src/jobs/data/adobe-data.tsv")
         adobe_df = adobe_data_obj.select_adobe_fields(adobe_data_obj.adobe_raw_df)
         result_count = adobe_df.count()
         self.assertEqual(result_count, 21, "Record count should be 21")
