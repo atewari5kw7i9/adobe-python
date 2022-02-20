@@ -28,6 +28,22 @@ class UtilsTestCase(TestCase):
         result_count = adobe_df.count()
         self.assertEqual(result_count, 5, "Record count should be 5")
 
+    def test_end_results(self):
+        adobe_data_obj = adobe_data(self.spark, "src/jobs/data/adobe-data.tsv")
+        adobe_df = adobe_data_obj.select_adobe_fields(adobe_data_obj.adobe_raw_df)
+        adobe_df = adobe_data_obj.cast_adobe_df(adobe_df)
+        adobe_df = adobe_data_obj.explode_adobe_df(adobe_df)
+        adobe_df = adobe_data_obj.filter_adobe_df(adobe_df)
+        adobe_df = adobe_data_obj.split_adobe_df(adobe_df)
+        adobe_df = adobe_data_obj.scrap_search_url(adobe_df)
+        adobe_df_list = adobe_data_obj.group_result(adobe_df).collect()
+        adobe_dict = {}
+        for row in adobe_df_list:
+            combined_dict_key = row["domain_name"]+"-"+row["search1"]
+            adobe_dict[combined_dict_key] = row["Total_Revenue"]
+        self.assertEqual(adobe_dict["www.esshopzilla.com-null"], 3290.0, "1st Sum should be 3290.0")
+        self.assertEqual(adobe_dict["www.esshopzilla.com-Testing"], 2500, "2nd Sum should be 3290.0")
+        self.assertEqual(adobe_dict["www.esshopzilla.com-Ultimate"], 480.0, "3rd Sum should be 480.0")
 
     @classmethod
     def tearDownClass(cls) -> None:
