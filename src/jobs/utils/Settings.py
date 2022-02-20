@@ -1,3 +1,5 @@
+import src.jobs.transform as transform
+
 class Settings:
     spark_config = {'--executor-memory': '1G',  '--driver-memory': '2G'}
     output_path = "s3://logs-adobe-outbound/data/raw"
