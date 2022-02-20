@@ -26,7 +26,7 @@ class UtilsTestCase(TestCase):
         adobe_df = adobe_data_obj.explode_adobe_df(adobe_df)
         adobe_df = adobe_data_obj.filter_adobe_df(adobe_df)
         result_count = adobe_df.count()
-        self.assertEqual(result_count, 5, "Record count should be 5")
+        self.assertEqual(result_count, 6, "Record count should be 6")
 
 
     @classmethod
