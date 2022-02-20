@@ -62,7 +62,7 @@ class adobe_data:
         summary_df = df.groupBy("domain_name", "search1").\
                         sum("Total_Revenue").\
                         withColumnRenamed("sum(Total_Revenue)", "Total_Revenue").\
-                        sort(col("Totall_Revenue").desc())
+                        sort(col("Total_Revenue").desc())
 
         return summary_df
 
