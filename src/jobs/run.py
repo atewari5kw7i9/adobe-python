@@ -1,9 +1,8 @@
 from pyspark.sql import SparkSession
 import src.jobs.transform as transform
+from src.jobs.utils.Settings import Settings
 
-jobs = {
-    'job_transform': transform.process
-}
+jobs = Settings.jobs
 
 
 def run(parameters):
