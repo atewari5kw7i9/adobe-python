@@ -2,7 +2,8 @@ from unittest import TestCase
 from pyspark.sql import SparkSession
 from src.jobs.utils.spark_utils import adobe_data
 
-
+data_file = 'src/jobs/data/adobe-data.tsv'
+#data_file = 'data/adobe-data.tsv'
 class UtilsTestCase(TestCase):
     spark = None
 
@@ -14,14 +15,14 @@ class UtilsTestCase(TestCase):
             .getOrCreate()
 
     def test_datafile_loading(self):
-        adobe_data_obj = adobe_data(self.spark, "src/jobs/data/adobe-data.tsv")
-        adobe_df = adobe_data_obj.select_adobe_fields(adobe_data_obj.adobe_raw_df)
+        adobe_data_obj = adobe_data(self.spark, data_file)
+        adobe_df = adobe_data_obj.select_adobe_fields()
         result_count = adobe_df.count()
         self.assertEqual(result_count, 21, "Record count should be 21")
 
     def test_cast_filer(self):
-        adobe_data_obj = adobe_data(self.spark, "src/jobs/data/adobe-data.tsv")
-        adobe_df = adobe_data_obj.select_adobe_fields(adobe_data_obj.adobe_raw_df)
+        adobe_data_obj = adobe_data(self.spark, data_file)
+        adobe_df = adobe_data_obj.select_adobe_fields()
         adobe_df = adobe_data_obj.cast_adobe_df(adobe_df)
         adobe_df = adobe_data_obj.explode_adobe_df(adobe_df)
         adobe_df = adobe_data_obj.filter_adobe_df(adobe_df)
@@ -29,8 +30,8 @@ class UtilsTestCase(TestCase):
         self.assertEqual(result_count, 5, "Record count should be 5")
 
     def test_end_results(self):
-        adobe_data_obj = adobe_data(self.spark, "src/jobs/data/adobe-data.tsv")
-        adobe_df = adobe_data_obj.select_adobe_fields(adobe_data_obj.adobe_raw_df)
+        adobe_data_obj = adobe_data(self.spark, data_file)
+        adobe_df = adobe_data_obj.select_adobe_fields()
         adobe_df = adobe_data_obj.cast_adobe_df(adobe_df)
         adobe_df = adobe_data_obj.explode_adobe_df(adobe_df)
         adobe_df = adobe_data_obj.filter_adobe_df(adobe_df)

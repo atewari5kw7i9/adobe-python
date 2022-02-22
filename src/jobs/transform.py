@@ -13,7 +13,8 @@ def process(input_path):
     spark = spark_builder.getOrCreate()
     output_path = Settings.output_path
     adobe_data_obj = adobe_data(spark, input_path)
-    adobe_df = adobe_data_obj.select_adobe_fields(adobe_data_obj.adobe_raw_df)
+    adobe_df = adobe_data_obj.select_adobe_fields()
+    #adobe_df = adobe_data_obj.select_adobe_fields(adobe_data_obj.adobe_raw_df)
     adobe_df = adobe_data_obj.cast_adobe_df(adobe_df)
     adobe_df = adobe_data_obj.explode_adobe_df(adobe_df)
     adobe_df = adobe_data_obj.filter_adobe_df(adobe_df)

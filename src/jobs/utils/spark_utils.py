@@ -12,10 +12,11 @@ class adobe_data:
             .option("delimiter", "\t") \
             .csv(input_path)
 
-    def select_adobe_fields(self, adobe_df):
+    def select_adobe_fields(self):
         print("Step1")
         select_cols = Settings.columns_select
-        return adobe_df.select(*select_cols)
+        #return adobe_df.select(*select_cols)
+        return self.adobe_raw_df.select(*select_cols)
 
     def cast_adobe_df(self, adobe_df):
         print("Step2")
@@ -69,13 +70,13 @@ class adobe_data:
     def write_out_file(self, adobe_df, s3_out_path):
         print("Step8")
         try:
-            #adobe_df.show()
-            adobe_df.coalesce(1).\
-                write.format("csv").\
-                option("header", True). \
-                option("delimiter", "\t").\
-                mode("overwrite"). \
-                save(s3_out_path)
+            adobe_df.show()
+            # adobe_df.coalesce(1).\
+            #     write.format("csv").\
+            #     option("header", True). \
+            #     option("delimiter", "\t").\
+            #     mode("overwrite"). \
+            #     save(s3_out_path)
         except Exception as e:
             print(e)
             raise
