@@ -7,3 +7,4 @@ class Settings:
     terminate_str = "&"
     domain_str_begin = "//"
     domain_str_end = "/"
+    revenue_locator = 3

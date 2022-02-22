@@ -3,6 +3,10 @@ from src.jobs.utils.Settings import Settings
 
 
 class adobe_data:
+    '''
+    This is the helper class which holds all transformation methods. These methods are
+    called from transform.py module
+    '''
 
     def __init__(self, spark, input_path):
         self.app_name = 'Adobe-Data-Product'
@@ -15,7 +19,6 @@ class adobe_data:
     def select_adobe_fields(self):
         print("Step1")
         select_cols = Settings.columns_select
-        #return adobe_df.select(*select_cols)
         return self.adobe_raw_df.select(*select_cols)
 
     def cast_adobe_df(self, adobe_df):
@@ -40,7 +43,7 @@ class adobe_data:
     def split_adobe_df(self, adobe_df):
         print("Step5")
         split_cols = split(adobe_df['product_attributes'], ';')
-        df1 = adobe_df.withColumn('Total_Revenue', split_cols.getItem(3))
+        df1 = adobe_df.withColumn('Total_Revenue', split_cols.getItem(Settings.revenue_locator))
         return df1
 
     def scrap_search_url(self, adobe_df):
@@ -70,13 +73,13 @@ class adobe_data:
     def write_out_file(self, adobe_df, s3_out_path):
         print("Step8")
         try:
-            adobe_df.show()
-            # adobe_df.coalesce(1).\
-            #     write.format("csv").\
-            #     option("header", True). \
-            #     option("delimiter", "\t").\
-            #     mode("overwrite"). \
-            #     save(s3_out_path)
+            #adobe_df.show()
+            adobe_df.coalesce(1).\
+                write.format("csv").\
+                option("header", True). \
+                option("delimiter", "\t").\
+                mode("overwrite"). \
+                save(s3_out_path)
         except Exception as e:
             print(e)
             raise
