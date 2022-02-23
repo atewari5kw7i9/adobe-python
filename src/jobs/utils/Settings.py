@@ -5,6 +5,6 @@ class Settings:
     columns_select = ["event_list", "product_list", "page_url", "referrer"]
     search_str = "(p=|q=|k=)"
     terminate_str = "&"
-    domain_str_begin = "//"
+    domain_str_begin = "//www."
     domain_str_end = "/"
     revenue_locator = 3

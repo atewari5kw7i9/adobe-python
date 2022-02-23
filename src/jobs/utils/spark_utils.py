@@ -64,9 +64,11 @@ class adobe_data:
                              "cast(search1 as string) search1",
                              "cast(Total_Revenue as double) Total_Revenue")
         summary_df = df.groupBy("domain_name", "search1").\
-                        sum("Total_Revenue").\
-                        withColumnRenamed("sum(Total_Revenue)", "Total_Revenue").\
-                        sort(col("Total_Revenue").desc())
+                        sum("Total_Revenue"). \
+                        withColumnRenamed("domain_name", "Search Engine Domain"). \
+                        withColumnRenamed("search1", "Search Keyword"). \
+                        withColumnRenamed("sum(Total_Revenue)", "Revenue").\
+                        sort(col("Revenue").desc())
 
         return summary_df
 

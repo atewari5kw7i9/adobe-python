@@ -40,11 +40,11 @@ class UtilsTestCase(TestCase):
         adobe_df_list = adobe_data_obj.group_result(adobe_df).collect()
         adobe_dict = {}
         for row in adobe_df_list:
-            combined_dict_key = row["domain_name"]+"-"+str(row["search1"])
-            adobe_dict[combined_dict_key] = row["Total_Revenue"]
-        self.assertEqual(adobe_dict["www.esshopzilla.com-None"], 3290.0, "1st Sum should be 3290.0")
-        self.assertEqual(adobe_dict["www.esshopzilla.com-Testing"], 2500, "2nd Sum should be 3290.0")
-        self.assertEqual(adobe_dict["www.esshopzilla.com-Ultimate"], 480.0, "3rd Sum should be 480.0")
+            combined_dict_key = row["Search Engine Domain"]+"-"+str(row["Search Keyword"])
+            adobe_dict[combined_dict_key] = row["Revenue"]
+        self.assertEqual(adobe_dict["esshopzilla.com-None"], 3290.0, "1st Sum should be 3290.0")
+        self.assertEqual(adobe_dict["esshopzilla.com-Testing"], 2500, "2nd Sum should be 3290.0")
+        self.assertEqual(adobe_dict["esshopzilla.com-Ultimate"], 480.0, "3rd Sum should be 480.0")
 
     @classmethod
     def tearDownClass(cls) -> None:
